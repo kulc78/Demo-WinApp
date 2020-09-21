@@ -1,28 +1,45 @@
 ﻿steps:
 
 #### Build, GCR(Google Container Registry) Push
+#- id: 'build'
+#  name: 'gcr.io/cloud-builders/docker'
+#  args: ['build', '-t', 'gcr.io/mineral-hangar-288307/demo-chat:$COMMIT_SHA', '.']
+#images: ['gcr.io/mineral-hangar-288307/demo-chat:$COMMIT_SHA']
+
+#### Build
 - id: 'build'
   name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/mineral-hangar-288307/demo-chat:$COMMIT_SHA', '.']
-images: ['gcr.io/mineral-hangar-288307/demo-chat:$COMMIT_SHA']
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+        docker build -t gcr.io/mineral-hangar-288307/demo-chat .
+
+### GCR(Google Container Registry) Push
+- id: 'push'
+  name: "gcr.io/cloud-builders/docker"
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+        docker push gcr.io/mineral-hangar-288307/demo-chat:latest
 
 #### Deploy
-#- id: 'deploy'
-  #name: 'gcr.io/cloud-builders/gcloud'
-  #env:
-  #  - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
-  #  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
-  #entrypoint: 'bash'
-  #args:
-  #  - '-c'
-  #  - |
-  #      CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}
-  #      PROJECT=$$(gcloud config get-value core/project)
-  #      ZONE=${_CLOUDSDK_COMPUTE_ZONE}
-  #      gcloud container clusters get-credentials "$${CLUSTER}" \
-  #        --project "$${PROJECT}" \
-  #        --zone "$${ZONE}"
-  #      sed -i 's|demo-chat:.*|demo-chat:$COMMIT_SHA|' demo-deploy.yaml
-
-  #      kubectl apply -f demo-deploy.yaml
-  #      kubectl apply -f demo-service.yaml
+- id : 'deploy'
+  name: 'gcr.io/cloud-builders/gcloud'
+  env:
+    - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |-
+        CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}
+        PROJECT=$$(gcloud config get-value core/project)
+        ZONE=${_CLOUDSDK_COMPUTE_ZONE}
+        gcloud container clusters get-credentials "$${CLUSTER}" \
+          --project "$${PROJECT}" \
+          --zone "$${ZONE}"
+        #sed -i 's|demo-chat:.*|demo-chat:$COMMIT_SHA|' demo-deploy.yaml
+        kubectl apply -f demo-deploy.yaml
+        kubectl apply -f demo-service.yaml
