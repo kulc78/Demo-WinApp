@@ -8,8 +8,8 @@ metadata:
 spec:
   ports:
   - protocol: TCP
-    port: 80
-    targetPort: 8080
+    port: 8090
+    targetPort: 80
   selector:
     app: demo-chat
   type: LoadBalancer
