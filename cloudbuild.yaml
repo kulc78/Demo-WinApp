@@ -6,7 +6,7 @@
   args: ['build', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA', '.']
 images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
 
-### Deploy
+#### Deploy
 - id: 'deploy'
   name: 'gcr.io/cloud-builders/gcloud'
   env:
