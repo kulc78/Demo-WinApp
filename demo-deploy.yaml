@@ -1,0 +1,19 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-chat
+  labels:
+    app: demo-chat
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo-chat
+  template:
+    metadata:
+      labels:
+        app: demo-chat
+    spec:
+      containers:
+      - name: demo-spring
+        image: gcr.io/mineral-hangar-288307/demo-chat:v1
