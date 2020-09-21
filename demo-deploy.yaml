@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
       - name: demo-chat
-        image: gcr.io/mineral-hangar-288307/demo-chat:v1
+        image: gcr.io/mineral-hangar-288307/demo-chat:latest
