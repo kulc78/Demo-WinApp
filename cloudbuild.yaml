@@ -22,7 +22,7 @@ images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
         gcloud container clusters get-credentials "$${CLUSTER}" \
           --project "$${PROJECT}" \
           --zone "$${ZONE}"
-        sed -i 's|demo-spring:.*|demo-spring:$COMMIT_SHA|' demo-dp.yaml
+        sed -i 's|demo-chat:.*|demo-chat:$COMMIT_SHA|' demo-deploy.yaml
 
-        kubectl apply -f demo-dp.yaml
-        kubectl apply -f demo-svc.yaml
+        kubectl apply -f demo-dploy.yaml
+        kubectl apply -f demo-service.yaml

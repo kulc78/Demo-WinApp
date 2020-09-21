@@ -15,5 +15,5 @@ spec:
         app: demo-chat
     spec:
       containers:
-      - name: demo-spring
+      - name: demo-chat
         image: gcr.io/mineral-hangar-288307/demo-chat:v1
